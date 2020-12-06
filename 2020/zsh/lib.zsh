@@ -67,3 +67,13 @@ function poll_long_running {
   echo -n "$(echo "$message" | sed 's/./ /')             " "\r"
   wait "$pid" >/dev/null 2>&1 && cecho green "done     " || cecho red "failed     "
 }
+
+function txt_from_editor {
+  local default_body=$1
+
+  fname=$(mktemp) || exit 1
+  echo "$default_body" >$fname
+  $EDITOR $fname </dev/tty >/dev/tty  # make sure that we have a TTY to work with for the editor
+  cat $fname
+  rm $fname
+}
