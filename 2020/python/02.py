@@ -27,5 +27,5 @@ def part2(values):
 
 
 VALUES = [line.strip() for line in open(FNAME, "r")]
-part1()
-part2()
+part1(VALUES)
+part2(VALUES)
