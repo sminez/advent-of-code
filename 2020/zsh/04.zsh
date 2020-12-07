@@ -49,13 +49,13 @@ function has_valid {
 
 # part 1
 WITH_REQUIRED=$(
-  pass_per_line | while read -r line; do
+  pass_per_line | while read line; do
     has_required $line
   done
 )
 echo $WITH_REQUIRED | wc -l
 
 # part2
-echo $WITH_REQUIRED | while read -r line; do
+echo $WITH_REQUIRED | while read line; do
   has_valid $line
 done | wc -l

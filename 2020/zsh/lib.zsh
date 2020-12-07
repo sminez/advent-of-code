@@ -1,6 +1,12 @@
 #!/usr/bin/env zsh
 # This is a little helper library of data and functions that help with general
 # shell scripting and providing a consistent TUI.
+#
+# NOTE: Some useful docs / resources for reference
+#   built-ins  -- http://zsh.sourceforge.net/Doc/Release/Shell-Builtin-Commands.html#Shell-Builtin-Commands
+#   redirects  -- http://zsh.sourceforge.net/Doc/Release/Redirection.html#Redirection
+#   arithmetic -- http://zsh.sourceforge.net/Doc/Release/Arithmetic-Evaluation.html#Arithmetic-Evaluation
+#   expansion  -- http://zsh.sourceforge.net/Doc/Release/Expansion.html#Expansion
 
 typeset -AH C
 C=(
@@ -14,6 +20,14 @@ C_ERR="$C[red]"
 # Arithmetic reducers
 function sum { awk '{ T+=$1 }; END { print T }' }
 function product { awk 'BEGIN { T=1 }; { T*=$1 }; END { print T }' }
+
+# utility
+function mapstdin {
+  local func=$1 line
+  while read line; do
+    $func $line
+  done
+}
 
 # Formatting
 function cecho { echo -e "$C[$1]$2$C[nc]" }
