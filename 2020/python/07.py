@@ -45,19 +45,11 @@ def check_candidates(bags, rules, target, so_far):
 
 
 def contents_of(bag, rules):
-    children = rules[bag]
-    if children == []:
-        return []
-
-    return [(n, b, contents_of(b, rules)) for n, b in children]
+    return [(n, b, contents_of(b, rules)) for n, b in rules[bag]]
 
 
 def fold_node(weight, leaves):
-    total = 0
-    if leaves != []:
-        for n, _, children in leaves:
-            total += n * (1 + fold_node(n, children))
-    return total
+    return sum(n * (1 + fold_node(n, children)) for n, _, children in leaves)
 
 
 def part1(rules):
