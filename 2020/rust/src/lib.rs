@@ -1,6 +1,7 @@
 pub mod day1;
 pub mod day2;
 pub mod day3;
+pub mod day4;
 
 pub trait Solution {
     fn new() -> Self;
@@ -25,6 +26,15 @@ pub mod helpers {
         s.split('\n')
             .filter(|s| !s.is_empty())
             .map(|s: &str| s.into())
+            .collect()
+    }
+
+    pub fn file_as_blocks(fname: &str, delimiter: &str) -> Vec<Vec<String>> {
+        let mut file = File::open(fname).unwrap();
+        let mut s = String::new();
+        file.read_to_string(&mut s).expect("failed to read");
+        s.split(delimiter)
+            .map(|s| s.split('\n').map(|s| s.to_string()).collect())
             .collect()
     }
 
