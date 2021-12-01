@@ -1,10 +1,10 @@
-use crate::input_as_ints;
+use crate::{input_as_ints, split_off};
 use anyhow::Result;
 
 const INPUT: &str = include_str!("../input/01.txt");
 
 pub fn part1() -> Result<()> {
-    let iter = input_as_ints(INPUT)?;
+    let iter = input_as_ints(INPUT);
     let count = compare_lines(iter);
     println!("Number of increases: {}", count);
 
@@ -12,7 +12,7 @@ pub fn part1() -> Result<()> {
 }
 
 pub fn part2() -> Result<()> {
-    let iter = input_as_ints(INPUT)?;
+    let iter = input_as_ints(INPUT);
     let count = compare_blocks(iter);
     println!("Number of increases: {}", count);
 
@@ -34,14 +34,17 @@ fn compare_lines(mut iter: impl Iterator<Item = i32>) -> i32 {
     count
 }
 
-fn compare_blocks(iter: impl Iterator<Item = i32>) -> i32 {
-    let ns: Vec<i32> = iter.take(3).collect();
+fn compare_blocks(mut iter: impl Iterator<Item = i32>) -> i32 {
+    let ns = split_off(&mut iter, 3);
     let (mut first, mut second, mut third) = (ns[0], ns[1], ns[2]);
     let mut prev = first + second + third;
     let mut count = 0;
 
-    for line in iter {
-        let (first, second, third) = (second, third, line);
+    for current in iter {
+        first = second;
+        second = third;
+        third = current;
+
         let total = first + second + third;
 
         if total > prev {
@@ -63,5 +66,10 @@ mod tests {
     #[test]
     fn part_1_example() {
         assert_eq!(compare_lines(DATA.into_iter()), 7);
+    }
+
+    #[test]
+    fn part_2_example() {
+        assert_eq!(compare_blocks(DATA.into_iter()), 5);
     }
 }
