@@ -1,10 +1,15 @@
 pub mod day01;
+pub mod day02;
 
 pub fn input_as_ints(input: &'static str) -> impl Iterator<Item = i32> {
     input
         .split_whitespace()
         .filter(|s| !s.is_empty())
         .map(|s: &str| s.parse().expect("invalid numeric line"))
+}
+
+pub fn line_iter(input: &'static str) -> impl Iterator<Item = &'static str> {
+    input.split('\n').filter(|s| !s.is_empty())
 }
 
 pub fn split_off<T>(iter: &mut impl Iterator<Item = T>, n: usize) -> Vec<T> {
