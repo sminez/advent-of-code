@@ -1,4 +1,3 @@
-use crate::line_iter;
 use anyhow::Result;
 
 const INPUT: &str = include_str!("../input/02.txt");
@@ -21,7 +20,7 @@ fn run_simple(input: &'static str) -> Result<(i32, i32)> {
     let mut h = 0;
     let mut d = 0;
 
-    for line in line_iter(input) {
+    for line in input.lines() {
         let parts: Vec<&str> = line.split_whitespace().collect();
         let n: i32 = parts[1].parse()?;
 
@@ -41,7 +40,7 @@ fn run_with_aim(input: &'static str) -> Result<(i32, i32)> {
     let mut h = 0;
     let mut d = 0;
 
-    for line in line_iter(input) {
+    for line in input.lines() {
         let parts: Vec<&str> = line.split_whitespace().collect();
         let n: i32 = parts[1].parse()?;
 
