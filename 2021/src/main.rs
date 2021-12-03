@@ -16,6 +16,8 @@ fn main() -> anyhow::Result<()> {
         (1, 2) => day01::part2(),
         (2, 1) => day02::part1(),
         (2, 2) => day02::part2(),
+        (3, 1) => day03::part1(),
+        (3, 2) => day03::part2(),
         (day, part) => Err(anyhow::anyhow!("Unknown day/part: {}/{}", day, part)),
     }
 }
