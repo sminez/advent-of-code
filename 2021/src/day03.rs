@@ -20,34 +20,47 @@ pub fn part2() -> Result<()> {
 
 fn gamma_epsilon(input: &str) -> Result<(u32, u32)> {
     let n_bits = input.split_once('\n').unwrap().0.len();
-    let mut counts: Vec<isize> = vec![0; n_bits];
 
-    for line in input.lines() {
-        for (i, c) in line.char_indices() {
-            if c == '0' {
-                counts[i] -= 1;
-            } else {
-                counts[i] += 1;
-            }
-        }
-    }
+    let lines = char_lines(input);
+    let gamma_str: String = (0..n_bits)
+        .into_iter()
+        .map(|n| most_common(&lines, n, false))
+        .collect();
 
-    let gamma = map_counts(&counts, |b| b > 0)?;
-    let epsilon = map_counts(&counts, |b| b < 0)?;
+    let epsilon_str: String = gamma_str
+        .chars()
+        .map(|c| if c == '0' { '1' } else { '0' })
+        .collect();
+
+    let gamma = u32::from_str_radix(&gamma_str, 2)?;
+    let epsilon = u32::from_str_radix(&epsilon_str, 2)?;
 
     Ok((gamma, epsilon))
 }
 
-fn map_counts<F>(counts: &[isize], cond: F) -> Result<u32>
-where
-    F: Fn(isize) -> bool,
-{
-    let bits: String = counts
-        .iter()
-        .map(|&b| if cond(b) { '1' } else { '0' })
-        .collect();
+fn most_common(input: &[Vec<char>], index: usize, prefer_zero: bool) -> char {
+    let count = input.iter().fold(0, |mut acc, chars| {
+        if chars[index] == '0' {
+            acc -= 1
+        } else {
+            acc += 1
+        }
+        acc
+    });
 
-    Ok(u32::from_str_radix(&bits, 2)?)
+    match count {
+        n if n > 0 => '1',
+        n if n < 0 => '0',
+        0 if prefer_zero => '0',
+        _ => '1',
+    }
+}
+
+fn char_lines(input: &str) -> Vec<Vec<char>> {
+    input
+        .lines()
+        .map(|line| line.chars().collect::<Vec<char>>())
+        .collect()
 }
 
 #[cfg(test)]
